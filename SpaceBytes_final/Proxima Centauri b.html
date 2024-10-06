@@ -1,0 +1,54 @@
+<title>Render</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+<script type="module">
+    
+    const PlanetName = "Proxima Centauri b";
+    const PlanetDescription = "Proxima Centauri b is a terrestrial planet discovered in 2016. It orbits the red dwarf star Proxima Centauri, located 4.24 light-years from Earth in the constellation of Centaurus. With a mass 1.27 times that of Earth and a radius 1.18 times Earth's, it completes an orbit every 11.2 days. Its average surface temperature is 20°C.";
+    const PlanetDiscoveryYear = "2016";
+
+    const planetDescriptionTag = document.getElementById("Descripcionplaneta");
+    planetDescriptionTag.setAttribute("value", PlanetDescription + "\n\n");
+
+    const planetNameTag = document.getElementById("Nombreplaneta");
+    planetNameTag.setAttribute("value", PlanetName + "\n\n");
+
+    const planetDiscoveryYearTag = document.getElementById("AnioDescubrimiento");
+    planetDiscoveryYearTag.setAttribute("value", PlanetDiscoveryYear + "\n\n");
+</script>
+</head>
+<body>
+<a-scene device-orientation-permission-ui="enabled: false">
+    <!-- Agregar el cielo como fondo -->
+    <a-sky src="8k_stars.jpg"></a-sky>
+
+   
+    <!-- Entidad para cargar y mostrar el archivo .glb -->
+    
+    <a-entity id="Proxima Centauri b" position="0 1 -10" gltf-model='url(Proxima Centauri b.glb)' scale="10 10 10"></a-entity>
+
+    
+    <!-- Texto descriptivo -->
+     
+    <a-entity position="0 2 -10.01" geometry="primitive: plane; width: 4.2; height: 2.5" material="color: #000000; opacity: 0.7;side: double"></a-entity>
+    <a-text id="Nombreplaneta" position="0.75 3 -10" color="#FFFFFF" width="4" material="side: double" align="center"></a-text>
+    <a-text value="Name of the planet: " position="-0.85 3 -10" color="#FFFFFF" width="4" material="side: double" align="center"></a-text>
+
+    
+    <a-text id="Descripcionplaneta" position="0 2.15 -10" color="#FFFFFF" width="4" align="center"></a-text>
+
+ 
+    <a-text id="AnioDescubrimiento" position="0.95 1.25 -10" color="#FFFFFF" material="side: double" width="4" align="center"></a-text>
+    <a-text value="Discovery Year: " position="-0.25 1.25 -10" color="#FFFFFF" width="4" align="center"></a-text>
+
+    <a-entity position="0 2 -2.01" geometry="primitive: plane; width: 4.2; height: 1" material="color: #000000; opacity: 0.7"></a-entity>
+    <a-text value="Get close to the exoplanet to see more details" position="0 2 -2" color="#FFFFFF" width="4" align="center"></a-text>
+
+   
+    <!-- Añadir iluminación -->
+    <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
+    <a-light type="directional" color="#ffffff" intensity="0.8" position="-1 1 1"></a-light>
+    
+</a-scene>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Planet Viewer with VR/AR</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        #container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        #vrButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <button id="vrButton">Enter VR/AR</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@webxr/xr-button@1.0.1/xr-button.js"></script>
+
+    <script>
+        // Configuración de Three.js
+        const container = document.getElementById('container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // Luz en la escena
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(0, 1, 1).normalize();
+        scene.add(light);
+
+        // Carga del modelo 3D del planeta
+        const loader = new THREE.TextureLoader();
+        const planetTexture = loader.load('path_to_planet_texture.jpg'); // Textura del planeta
+        const planetGeometry = new THREE.SphereGeometry(5, 64, 64);
+        const planetMaterial = new THREE.MeshBasicMaterial({ map: planetTexture });
+        const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+        scene.add(planet);
+
+        // Posición de la cámara
+        camera.position.z = 15;
+
+        // Animación para rotar el planeta
+        function animate() {
+            requestAnimationFrame(animate);
+            planet.rotation.y += 0.005; // Rotación lenta del planeta
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // WebXR para VR y AR
+        let xrSession = null;
+        const xrButton = document.getElementById('vrButton');
+
+        if (navigator.xr) {
+            xrButton.addEventListener('click', () => {
+                if (!xrSession) {
+                    navigator.xr.requestSession('immersive-vr').then(onSessionStarted);
+                }
+            });
+        } else {
+            xrButton.innerText = 'WebXR not supported';
+        }
+
+        function onSessionStarted(session) {
+            xrSession = session;
+            renderer.xr.enabled = true;
+            renderer.xr.setSession(xrSession);
+        }
+    </script>
+</body>
+</html>
